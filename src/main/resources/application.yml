@@ -1,0 +1,13 @@
+server:
+  port: ${SERVER_PORT:8081}
+spring:
+  application: 
+    name: mysql
+  datasource:  
+    url: jdbc:mysql://${MYSQLDB_HOST:container_mysql}:${MYSQLDB_CONTAINER_PORT:3306}/${MYSQLDB_DB_NAME:mydatabase}
+    username: myuser
+    password: password
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect

@@ -1,0 +1,36 @@
+services:
+  mysql_database:
+    image: 'mysql:latest'
+    container_name: 'container_mysql'
+    restart: always
+    environment:
+      - MYSQL_DATABASE=mydatabase
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=verysecret
+      - MYSQL_USER=myuser
+    ports:
+      - 3306:3306
+    networks:
+      - my_app_network
+  
+  spring_boot_project:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - MYSQLDB_HOST=container_mysql
+      - MYSQLDB_CONTAINER_PORT=3306
+      - MYSQLDB_DB_NAME=mydatabase
+      - DB_USER=myuser
+      - DB_PASSWORD=secret
+      - SERVER_PORT=8080
+    depends_on:
+      - mysql_database
+    networks:
+      - my_app_network
+
+networks:
+  my_app_network:
+    driver: bridge
